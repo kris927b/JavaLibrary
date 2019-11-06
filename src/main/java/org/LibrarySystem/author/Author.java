@@ -1,14 +1,38 @@
 package main.java.org.LibrarySystem.author;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.nypl.journalsystem.core.IAuthor;
+
+import main.java.org.LibrarySystem.article.Article;
 
 public abstract class Author implements IAuthor {
     private String name;
     private int hIndex;
+    private List<Article> articles;
 
 
     public Author(String name) {
+        this.articles = new ArrayList<>();
         this.name = name;
+    }
+
+    public Author(String name, List<Article> articles) {
+        this.name = name;
+        this.articles = articles;
+    }
+
+    public List<Article> getArticles() {
+        return this.articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
+
+    public void addArticle(Article article) {
+        this.articles.add(article);
     }
 
     /**
@@ -45,12 +69,5 @@ public abstract class Author implements IAuthor {
      */
 	public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " name='" + getName() + "'" +
-            "}";
     }
 }

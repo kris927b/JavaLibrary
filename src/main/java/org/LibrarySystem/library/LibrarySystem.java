@@ -1,4 +1,4 @@
-package main.java.org.LibrarySystem;
+package main.java.org.LibrarySystem.library;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,25 +23,24 @@ import main.java.org.LibrarySystem.journal.Journal;
 import main.java.org.LibrarySystem.publisher.Publisher;
 
 public class LibrarySystem implements ILibrarySystem {
-    private static final String COMMA_SEPERATOR = ",";
-    private static final String SEMI_SEPERATOR = ";";
-    private static final String SQUARE_SEPERATOR = "\\[";
-    private static final String QUOTE_SEPERATOR = "(\", \")|(, \")|(\", )";
-    static HashMap<String, Publisher> publishers;
-    static HashMap<String, Journal> journals;
-    static HashMap<String, Author> authors;
-    static HashMap<Integer, Article> articles;
+    private final String COMMA_SEPERATOR = ",";
+    private final String SEMI_SEPERATOR = ";";
+    private final String SQUARE_SEPERATOR = "\\[";
+    private final String QUOTE_SEPERATOR = "(\", \")|(, \")|(\", )";
+    HashMap<String, Publisher> publishers;
+    HashMap<String, Journal> journals;
+    HashMap<String, Author> authors;
+    HashMap<Integer, Article> articles;
 
-    public static void main(String[] args) throws Exception {
+    public LibrarySystem() {
         File dataDir = new File("data/");
         publishers = new HashMap<>();
         journals = parseJournals(CSVReader(new File(dataDir, "Journals.csv")));
         authors = new HashMap<>();
         articles = parseArticles(CSVReader(new File(dataDir, "Basement.csv")));
-        printLibrary();
     }
 
-    private static List<List<String>> CSVReader(File file) {
+    private List<List<String>> CSVReader(File file) {
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
@@ -72,7 +71,7 @@ public class LibrarySystem implements ILibrarySystem {
         return records;
     }
 
-    private static HashMap<String, Journal> parseJournals(List<List<String>> records) {
+    private HashMap<String, Journal> parseJournals(List<List<String>> records) {
         HashMap<String, Journal> journals = new HashMap<String, Journal>();
         for (List<String> record : records) {
             Journal j;
@@ -88,7 +87,7 @@ public class LibrarySystem implements ILibrarySystem {
         return journals;
     }
 
-    private static HashMap<Integer, Article> parseArticles(List<List<String>> records) {
+    private HashMap<Integer, Article> parseArticles(List<List<String>> records) {
         HashMap<Integer, Article> articles = new HashMap<Integer, Article>();
         for (List<String> record : records) {
             Journal j = journals.get(record.get(3));
@@ -129,14 +128,18 @@ public class LibrarySystem implements ILibrarySystem {
             Article a = new Article(id, record.get(1), authorList, j, papers);
             j.addArticle(a);
             articles.put(id, a);
+
+            for (Author author : authorList) {
+                author.addArticle(a);
+            }
         }
 
         return articles;
     }
 
-    private static void printLibrary() {
-        for (Journal j : journals.values()) {
-            System.out.println(j);
+    private void printLibrary() {
+        for (Author a : authors.values()) {
+            System.out.println(a);
         }
     }
 
@@ -170,8 +173,8 @@ public class LibrarySystem implements ILibrarySystem {
      */
     @Override
     public Collection<? extends IArticle> getArticlesByAuthor(IAuthor arg0) {
-        // TODO Auto-generated method stub
-        return null;
+        Author a = (Author) arg0;
+        return a.getArticles();
     }
 
     /**

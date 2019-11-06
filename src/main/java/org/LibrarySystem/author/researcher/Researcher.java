@@ -1,5 +1,8 @@
 package main.java.org.LibrarySystem.author.researcher;
 
+import java.util.List;
+
+import main.java.org.LibrarySystem.article.Article;
 import main.java.org.LibrarySystem.author.Author;
 
 public class Researcher extends Author {
@@ -7,6 +10,11 @@ public class Researcher extends Author {
 
     public Researcher(String name, Title title) {
         super(name);
+        this.title = title;
+    }
+
+    public Researcher(String name, Title title, List<Article> articles) {
+        super(name, articles);
         this.title = title;
     }
 
@@ -20,9 +28,8 @@ public class Researcher extends Author {
 
     @Override
     public String toString() {
-        return "{" +
-            " title='" + getTitle() + "'" +
-            "}";
+        return getName();
     }
+    
 
 }

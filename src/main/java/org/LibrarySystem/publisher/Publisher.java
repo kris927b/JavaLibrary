@@ -30,10 +30,7 @@ public class Publisher implements IPublisher {
 
     @Override
     public String toString() {
-        return "{" +
-            " name='" + getName() + "'" +
-            ", location='" + getLocation() + "'" +
-            "}";
+        return getName() + ", " + getLocation();
     }
 
 }

@@ -2,6 +2,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - LibrarySystemApplication",
+            "request": "launch",
+            "mainClass": "main.java.org.LibrarySystem.librarysystemapplication.LibrarySystemApplication",
+            "projectName": "Mandatory1"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            "mainClass": "main.java.org.LibrarySystem.App",
+            "projectName": "Mandatory1"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - LibrarySystem",
+            "request": "launch",
+            "mainClass": "main.java.org.LibrarySystem.LibrarySystem",
+            "projectName": "Mandatory1"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - App",
             "request": "launch",
             "mainClass": "app.App",

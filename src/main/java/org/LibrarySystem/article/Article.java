@@ -81,12 +81,7 @@ public class Article implements IArticle {
 
     @Override
     public String toString() {
-        return "\n\t\t{" +
-            " \n\t\t title='" + getTitle() + "'" +
-            ", \n\t\t Id='" + getId() + "'" +
-            ", \n\t\t authors='" + getAuthors() + "'" +
-            ", \n\t\t papers='" + getPapers() + "'" +
-            "}";
+        return "" + getAuthors();
     }
 
 }

@@ -1,5 +1,8 @@
 package main.java.org.LibrarySystem.author.student;
 
+import java.util.List;
+
+import main.java.org.LibrarySystem.article.Article;
 import main.java.org.LibrarySystem.author.Author;
 
 public class Student extends Author {
@@ -7,6 +10,11 @@ public class Student extends Author {
 
     public Student(String name, double GPA) {
         super(name);
+        this.GPA = GPA;
+    }
+
+    public Student(String name, double GPA, List<Article> articles) {
+        super(name, articles);
         this.GPA = GPA;
     }
 
@@ -20,8 +28,6 @@ public class Student extends Author {
 
     @Override
     public String toString() {
-        return "{" +
-            " GPA='" + getGPA() + "'" +
-            "}";
+        return getName();
     }
 }
