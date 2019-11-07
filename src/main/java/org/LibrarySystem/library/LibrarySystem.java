@@ -20,6 +20,7 @@ import main.java.org.LibrarySystem.author.researcher.Researcher;
 import main.java.org.LibrarySystem.author.researcher.Title;
 import main.java.org.LibrarySystem.author.student.Student;
 import main.java.org.LibrarySystem.journal.Journal;
+import main.java.org.LibrarySystem.mutableInt.MutableInt;
 import main.java.org.LibrarySystem.publisher.Publisher;
 
 public class LibrarySystem implements ILibrarySystem {
@@ -27,16 +28,20 @@ public class LibrarySystem implements ILibrarySystem {
     private final String SEMI_SEPERATOR = ";";
     private final String SQUARE_SEPERATOR = "\\[";
     private final String QUOTE_SEPERATOR = "(\", \")|(, \")|(\", )";
-    HashMap<String, Publisher> publishers;
-    HashMap<String, Journal> journals;
-    HashMap<String, Author> authors;
-    HashMap<Integer, Article> articles;
+    private HashMap<String, Publisher> publishers;
+    private HashMap<String, Journal> journals;
+    private HashMap<String, Author> authors;
+    private HashMap<Integer, Article> articles;
+    private HashMap<Author, HashMap<Author, MutableInt>> coAuthors;
+
+
 
     public LibrarySystem() {
         File dataDir = new File("data/");
         publishers = new HashMap<>();
         journals = parseJournals(CSVReader(new File(dataDir, "Journals.csv")));
         authors = new HashMap<>();
+        coAuthors = new HashMap<>();
         articles = parseArticles(CSVReader(new File(dataDir, "Basement.csv")));
     }
 
@@ -131,6 +136,22 @@ public class LibrarySystem implements ILibrarySystem {
 
             for (Author author : authorList) {
                 author.addArticle(a);
+                for (Author coAuthor : authorList) {
+                    if (author == coAuthor) {
+                        continue;
+                    }
+                    HashMap<Author, MutableInt> aMap = coAuthors.get(author);
+                    if (aMap == null) {
+                        coAuthors.put(author, new HashMap<>());
+                        aMap = coAuthors.get(author);
+                    }
+                    MutableInt count = aMap.get(coAuthor);
+                    if (count == null) {
+                        coAuthors.get(author).put(coAuthor, new MutableInt());
+                    } else {
+                        count.increment();
+                    }
+                }
             }
         }
 
@@ -203,7 +224,19 @@ public class LibrarySystem implements ILibrarySystem {
      */
     @Override
     public Collection<? extends IArticle> getArticlesCitingArticle(IArticle arg0) {
-        // TODO Auto-generated method stub
-        return null;
+        Article arg = (Article) arg0;
+        int articleID = arg.getId();
+        List<Article> citingArticles = new ArrayList<>();
+        for (Article a : articles.values()) {
+            List<Integer> papers = a.getPapers();
+            if (papers.contains(articleID)) {
+                citingArticles.add(a);
+            }
+        }
+        return citingArticles;
+    }
+
+    public HashMap<Author, HashMap<Author, MutableInt>> getCoAuthors() {
+        return coAuthors;
     }
 }
